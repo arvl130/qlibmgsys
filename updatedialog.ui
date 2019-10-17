@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>UpdateDialog</class>
+ <widget class="QDialog" name="UpdateDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>620</width>
+    <height>440</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Update Item</string>
+  </property>
+  <widget class="QDialogButtonBox" name="btnOKCancel">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>401</y>
+     <width>601</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <property name="standardButtons">
+    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblTitle">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>20</y>
+     <width>58</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Title</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="ledTitle">
+   <property name="geometry">
+    <rect>
+     <x>102</x>
+     <y>20</y>
+     <width>261</width>
+     <height>32</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="ledAuthor">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>60</y>
+     <width>261</width>
+     <height>32</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="ledPublisher">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>100</y>
+     <width>261</width>
+     <height>32</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="ledPublished">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>140</y>
+     <width>261</width>
+     <height>32</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="ledISBN">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>180</y>
+     <width>261</width>
+     <height>32</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="ledCategory">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>220</y>
+     <width>261</width>
+     <height>32</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblAuthor">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>60</y>
+     <width>58</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Author</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblPublisher">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>100</y>
+     <width>58</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Publisher</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblPublished">
+   <property name="geometry">
+    <rect>
+     <x>17</x>
+     <y>140</y>
+     <width>61</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Published</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblISBN">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>180</y>
+     <width>51</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>ISBN</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblCategory">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>220</y>
+     <width>61</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Category</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblGenre">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>260</y>
+     <width>61</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Genre</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="ledGenre">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>260</y>
+     <width>261</width>
+     <height>32</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPlainTextEdit" name="ptxtSynopsis">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>300</y>
+     <width>261</width>
+     <height>84</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblSynopsis">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>300</y>
+     <width>58</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Synopsis</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="ledCoverPhoto">
+   <property name="geometry">
+    <rect>
+     <x>472</x>
+     <y>350</y>
+     <width>131</width>
+     <height>32</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnCoverPhoto">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>350</y>
+     <width>81</width>
+     <height>34</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Choose...</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblCoverPhoto">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>20</y>
+     <width>221</width>
+     <height>321</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(145, 145, 145);</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="text">
+    <string>No Image Data</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>btnOKCancel</sender>
+   <signal>accepted()</signal>
+   <receiver>UpdateDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnOKCancel</sender>
+   <signal>rejected()</signal>
+   <receiver>UpdateDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

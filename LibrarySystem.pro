@@ -25,19 +25,25 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        adddialog.cpp \
         main.cpp \
         loginwindow.cpp \
         passworddialog.cpp \
+        updatedialog.cpp \
         viewwindow.cpp
 
 HEADERS += \
+        adddialog.h \
         loginwindow.h \
         passworddialog.h \
+        updatedialog.h \
         viewwindow.h
 
 FORMS += \
+        adddialog.ui \
         loginwindow.ui \
         passworddialog.ui \
+        updatedialog.ui \
         viewwindow.ui
 
 # Default rules for deployment.

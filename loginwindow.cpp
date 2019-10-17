@@ -20,8 +20,11 @@ void LoginWindow::authenticate(QString password) {
     QString rawpasswd = "goodpass";
 
     if (password == rawpasswd) {
-        this->close();
-        vw.show();
+        restoreWindow();
+        vw = new ViewWindow(this);
+        vw->show();
+        connect(vw, SIGNAL(unhideWindow()), this, SLOT(unhideWindow()));
+        this->hide();
     }
     else {
         ui->centralWidget->setEnabled(false);
@@ -51,10 +54,24 @@ void LoginWindow::restoreWindow() {
     ui->centralWidget->setEnabled(true);
 }
 
+void LoginWindow::unhideWindow() {
+    this->show();
+}
+
 void LoginWindow::on_btnAdminLogin_clicked()
 {
      pd = new PasswordDialog(this);
      pd->setModal(true);
      pd->show();
      connect(pd, SIGNAL(authenticate(QString)), this, SLOT(authenticate(QString)));
+}
+
+void LoginWindow::on_btnUserLogin_clicked()
+{
+    vw = new ViewWindow(this);
+    vw->show();
+    connect(this, SIGNAL(disableAdminBtns()), vw, SLOT(disableAdminBtns()));
+    emit disableAdminBtns();
+    connect(vw, SIGNAL(unhideWindow()), this, SLOT(unhideWindow()));
+    this->hide();
 }

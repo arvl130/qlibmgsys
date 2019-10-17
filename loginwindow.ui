@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>LoginWindow</string>
+   <string>Log In</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QLabel" name="pixLogin">
@@ -60,7 +60,7 @@
       <x>30</x>
       <y>200</y>
       <width>211</width>
-      <height>100</height>
+      <height>105</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="vrtLogin">

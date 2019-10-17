@@ -5,6 +5,7 @@
 
 #include <QtTest>
 #include <QDebug>
+#include <QtSql>
 
 #include <passworddialog.h>
 #include <viewwindow.h>
@@ -28,12 +29,19 @@ private slots:
 
     void restoreWindow();
 
+    void on_btnUserLogin_clicked();
+
+    void unhideWindow();
+
+signals:
+    void disableAdminBtns();
+
 private:
     Ui::LoginWindow *ui;
 
     PasswordDialog *pd;
 
-    ViewWindow vw;
+    ViewWindow *vw;
 
     QString progName_def = "SQLite Library System";
 
@@ -46,6 +54,8 @@ private:
         while (QTime::currentTime() < dieTime)
             QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
     }
+
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "db_conn");
 };
 
 #endif // LOGINWINDOW_H
