@@ -10,6 +10,7 @@
 
 #include <adddialog.h>
 #include <updatedialog.h>
+#include <summarydialog.h>
 
 namespace Ui {
 class ViewWindow;
@@ -42,7 +43,6 @@ private slots:
 
     void on_actionLogout_triggered();
 
-
     void on_actionAdd_item_triggered();
 
     void on_actionDelete_item_triggered();
@@ -50,6 +50,12 @@ private slots:
     void on_actionUpdate_item_triggered();
 
     void on_actionExit_triggered();
+
+    void on_ledSearch_textChanged(const QString &arg1);
+
+    void on_btnResetTable_clicked();
+
+    void on_actionSummary_triggered();
 
 signals:
     void loadCurrInfo(QString, QString, QString, QString, QString, QString, QString, QString, QString);
@@ -65,6 +71,7 @@ private:
 
     AddDialog *ad;
     UpdateDialog *ud;
+    SummaryDialog *sd;
 };
 
 #endif // VIEWWINDOW_H

@@ -56,6 +56,14 @@ void AddDialog::on_btnOKCancel_accepted()
     QString synopsis = ui->ptxtSynopsis->toPlainText();
     QString cover = ui->ledCoverPhoto->text();
 
+    if (ui->ledGenre->text().isEmpty()) {
+        genre = "(unsorted)";
+    }
+
+    if (ui->ledCategory->text().isEmpty()) {
+        category = "(unsorted)";
+    }
+
     emit addItem(title, author, publisher, published, isbn, category, genre, synopsis, cover);
 }
 
@@ -65,6 +73,7 @@ void AddDialog::on_btnCoverPhoto_clicked()
     ui->ledCoverPhoto->setText(QFileDialog::getOpenFileName(this, "Choose a cover image", homeDir));
     if (ui->ledCoverPhoto->text().isEmpty()) {
         ui->lblCoverPhoto->clear();
+        ui->lblCoverPhoto->setText("No Image Data");
         ui->ledCoverPhoto->setEnabled(false);
     }
     else {

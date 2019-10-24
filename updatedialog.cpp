@@ -55,8 +55,17 @@ void UpdateDialog::loadCurrInfo(QString title, QString author, QString publisher
     ui->ledGenre->setText(genre);
     ui->ptxtSynopsis->setPlainText(synopsis);
     ui->ledCoverPhoto->setText(cover);
-    QPixmap cover_img(appDataDir + "/imgs/" + cover);
-    ui->lblCoverPhoto->setPixmap(cover_img.scaled(ui->lblCoverPhoto->width(), ui->lblCoverPhoto->height(), Qt::KeepAspectRatio));
+    if (cover.isEmpty()) {
+        ui->lblCoverPhoto->setText("No Image Data");
+    }
+    else {
+        QPixmap cover_img(cover);
+        int cover_w = ui->lblCoverPhoto->width();
+        int cover_h = ui->lblCoverPhoto->height();
+        ui->lblCoverPhoto->setPixmap(cover_img.scaled(cover_w, cover_h, Qt::KeepAspectRatio));
+        ui->ledCoverPhoto->setEnabled(true);
+    }
+
 }
 
 void UpdateDialog::on_btnOKCancel_accepted()
@@ -71,6 +80,14 @@ void UpdateDialog::on_btnOKCancel_accepted()
     QString synopsis = ui->ptxtSynopsis->toPlainText();
     QString cover = ui->ledCoverPhoto->text();
 
+    if (ui->ledGenre->text().isEmpty()) {
+        genre = "(unsorted)";
+    }
+
+    if (ui->ledCategory->text().isEmpty()) {
+        category = "(unsorted)";
+    }
+
     emit updateItem(title, author, publisher, published, isbn, category, genre, synopsis, cover);
 }
 
@@ -79,6 +96,7 @@ void UpdateDialog::on_btnCoverPhoto_clicked()
     ui->ledCoverPhoto->setText(QFileDialog::getOpenFileName(this, "Choose a cover image", homeDir));
     if (ui->ledCoverPhoto->text().isEmpty()) {
         ui->lblCoverPhoto->clear();
+        ui->lblCoverPhoto->setText("No Image Data");
         ui->ledCoverPhoto->setEnabled(false);
     }
     else {
@@ -86,4 +104,3 @@ void UpdateDialog::on_btnCoverPhoto_clicked()
         ui->ledCoverPhoto->setEnabled(true);
     }
 }
-

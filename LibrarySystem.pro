@@ -29,6 +29,7 @@ SOURCES += \
         main.cpp \
         loginwindow.cpp \
         passworddialog.cpp \
+        summarydialog.cpp \
         updatedialog.cpp \
         viewwindow.cpp
 
@@ -36,6 +37,7 @@ HEADERS += \
         adddialog.h \
         loginwindow.h \
         passworddialog.h \
+        summarydialog.h \
         updatedialog.h \
         viewwindow.h
 
@@ -43,6 +45,7 @@ FORMS += \
         adddialog.ui \
         loginwindow.ui \
         passworddialog.ui \
+        summarydialog.ui \
         updatedialog.ui \
         viewwindow.ui
 

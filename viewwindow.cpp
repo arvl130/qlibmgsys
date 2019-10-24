@@ -49,6 +49,8 @@ void ViewWindow::loadTruncTable_category() {
     ui->tbvwBooks->setColumnWidth(0, ui->tbvwBooks->width() * 3 / 4);
 
     db.close();
+
+    ui->btnResetTable->setEnabled(true);
 }
 
 void ViewWindow::loadTruncTable_genre() {
@@ -65,6 +67,8 @@ void ViewWindow::loadTruncTable_genre() {
     ui->tbvwBooks->setColumnWidth(0, ui->tbvwBooks->width() * 3 / 4);
 
     db.close();
+
+    ui->btnResetTable->setEnabled(true);
 }
 
 void ViewWindow::loadListViews() {
@@ -92,8 +96,8 @@ void ViewWindow::loadListViews() {
 // This function treats book 'Title' as the primary key
 // It has to be refactored, later..
 void ViewWindow::loadItemInfo() {
-    QModelIndex index_data = ui->tbvwBooks->currentIndex();
-    QString item_name = index_data.sibling(index_data.row(),0).data().toString();
+    QModelIndex item_index = ui->tbvwBooks->currentIndex();
+    QString item_name = item_index.sibling(item_index.row(), 0).data().toString();
     qDebug().noquote() << item_name;
 
     db.open();
@@ -142,13 +146,17 @@ void ViewWindow::loadItemInfo() {
 
     // Cover
     QSqlQuery cover_qry(db);
-    cover_qry.exec("SELECT Image FROM Books WHERE Title ='" + item_name + "'");
+    cover_qry.exec("SELECT Image FROM Books WHERE Title = '" + item_name + "'");
     if (cover_qry.next()) {
         if (cover_qry.value(0).toString().isEmpty()) {
             ui->lblCoverPhoto->setText("No Image Data");
         }
         else {
-            ui->lblCoverPhoto->setPixmap(QPixmap(appDataDir + "/imgs/" + cover_qry.value(0).toString()).scaled(ui->lblCoverPhoto->width(), ui->lblCoverPhoto->height(), Qt::KeepAspectRatio));
+            QString cover_path = cover_qry.value(0).toString();
+            QPixmap cover_img(cover_path);
+            int cover_w = ui->lblCoverPhoto->width();
+            int cover_h = ui->lblCoverPhoto->height();
+            ui->lblCoverPhoto->setPixmap(cover_img.scaled(cover_w, cover_h, Qt::KeepAspectRatio));
         }
     }
 
@@ -174,6 +182,8 @@ void ViewWindow::addItem(QString title, QString author, QString publisher, QStri
     loadListViews();
 
     db.close();
+
+    ui->btnResetTable->setEnabled(false);
 }
 
 void ViewWindow::deleteItem() {
@@ -206,6 +216,8 @@ void ViewWindow::deleteItem() {
     loadListViews();
 
     db.close();
+
+    ui->btnResetTable->setEnabled(false);
 }
 
 void ViewWindow::updateItem(QString title, QString author, QString publisher, QString published, QString isbn, QString category, QString genre, QString synopsis, QString cover) {
@@ -213,7 +225,7 @@ void ViewWindow::updateItem(QString title, QString author, QString publisher, QS
     db.transaction();
 
     QModelIndex item_index = ui->tbvwBooks->currentIndex();
-    QString item_name = item_index.data(Qt::DisplayRole).toString();
+    QString item_name = item_index.sibling(item_index.row(), 0).data().toString();
 
     QSqlQuery update_title_qry(db),
                 update_author_qry(db),
@@ -248,63 +260,15 @@ void ViewWindow::updateItem(QString title, QString author, QString publisher, QS
 
     db.close();
 
-    db.open();
-
-    // Title
-    QSqlQuery title_qry(db);
-    title_qry.exec("SELECT Title FROM Books where Title = '" + item_name + "'");
-    if (title_qry.next()) {
-        ui->ledTitle->setText(title_qry.value(0).toString());
-    }
-
-    // Author
-    QSqlQuery author_qry(db);
-    author_qry.exec("SELECT Author FROM Books WHERE Title = '" + item_name + "'");
-    if (author_qry.next()) {
-        ui->ledAuthor->setText(author_qry.value(0).toString());
-    }
-
-    // Publisher
-    QSqlQuery publisher_qry(db);
-    publisher_qry.exec("SELECT Publisher FROM Books WHERE Title = '" + item_name + "'");
-    if (publisher_qry.next()) {
-        ui->ledPublisher->setText(publisher_qry.value(0).toString());
-    }
-
-    // Published
-    QSqlQuery published_qry(db);
-    published_qry.exec("SELECT DatePublished FROM Books WHERE Title = '" + item_name + "'");
-    if (published_qry.next()) {
-        ui->ledPublished->setText(published_qry.value(0).toString());
-    }
-
-    // ISBN
-    QSqlQuery isbn_qry(db);
-    isbn_qry.exec("SELECT ISBN FROM Books WHERE Title = '" + item_name + "'");
-    if (isbn_qry.next()) {
-        ui->ledISBN->setText(isbn_qry.value(0).toString());
-    }
-
-    // Synopsis
-    QSqlQuery synopsis_qry(db);
-    synopsis_qry.exec("SELECT Synopsis FROM Books WHERE Title = '" + item_name + "'");
-    if (synopsis_qry.next()) {
-        ui->ptxtSynopsis->setPlainText(synopsis_qry.value(0).toString());
-    }
-
-    // Cover
-    QSqlQuery cover_qry(db);
-    cover_qry.exec("SELECT Image FROM Books WHERE Title ='" + item_name + "'");
-    if (cover_qry.next()) {
-        if (cover_qry.value(0).toString().isEmpty()) {
-            ui->lblCoverPhoto->setText("No Image Data");
-        }
-        else {
-            ui->lblCoverPhoto->setPixmap(QPixmap(appDataDir + "/imgs/" + cover_qry.value(0).toString()).scaled(ui->lblCoverPhoto->width(), ui->lblCoverPhoto->height(), Qt::KeepAspectRatio));
-        }
-    }
-
-    db.close();
+    ui->btnResetTable->setEnabled(false);
+    ui->ledTitle->clear();
+    ui->ledAuthor->clear();
+    ui->ledPublisher->clear();
+    ui->ledPublished->clear();
+    ui->ledISBN->clear();
+    ui->ptxtSynopsis->clear();
+    ui->lblCoverPhoto->clear();
+    ui->lblCoverPhoto->setText("No Image Data");
 }
 
 void ViewWindow::disableAdminBtns() {
@@ -337,7 +301,7 @@ void ViewWindow::on_btnUpdate_clicked()
     connect(this, SIGNAL(loadCurrInfo(QString, QString, QString, QString, QString, QString, QString, QString, QString)), ud, SLOT(loadCurrInfo(QString, QString, QString, QString, QString, QString, QString, QString, QString)));
 
     QModelIndex item_index = ui->tbvwBooks->currentIndex();
-    QString item_name = item_index.data(Qt::DisplayRole).toString();
+    QString item_name = item_index.sibling(item_index.row(), 0).data().toString();
 
     db.open();
 
@@ -362,6 +326,7 @@ void ViewWindow::on_btnUpdate_clicked()
     QSqlQuery cover_qry(db);
     cover_qry.exec("SELECT Image FROM Books WHERE + Title = '" + item_name + "'");
     if (cover_qry.next()) {
+        qDebug().noquote() << "on_btnUpdate_clicked: cover: " << cover_qry.value(0).toString();
         cover = cover_qry.value(0).toString();
     }
 
@@ -399,7 +364,7 @@ void ViewWindow::on_actionUpdate_item_triggered()
     connect(this, SIGNAL(loadCurrInfo(QString, QString, QString, QString, QString, QString, QString, QString, QString)), ud, SLOT(loadCurrInfo(QString, QString, QString, QString, QString, QString, QString, QString, QString)));
 
     QModelIndex item_index = ui->tbvwBooks->currentIndex();
-    QString item_name = item_index.data(Qt::DisplayRole).toString();
+    QString item_name = item_index.sibling(item_index.row(), 0).data().toString();
 
     db.open();
 
@@ -425,6 +390,7 @@ void ViewWindow::on_actionUpdate_item_triggered()
     cover_qry.exec("SELECT Image FROM Books WHERE + Title = '" + item_name + "'");
     if (cover_qry.next()) {
         cover = cover_qry.value(0).toString();
+        qDebug().noquote() << "Cover:" << cover;
     }
 
     db.close();
@@ -437,4 +403,31 @@ void ViewWindow::on_actionUpdate_item_triggered()
 void ViewWindow::on_actionExit_triggered()
 {
     QApplication::quit();
+}
+
+
+
+void ViewWindow::on_ledSearch_textChanged(const QString &srch)
+{
+
+        db.open();
+        db.exec("select USN, FIRSTNAME from STUDENTS where USN like '" + srch + "%'");
+        QSqlQueryModel *display_qrm = new QSqlQueryModel;
+        display_qrm -> setQuery(db.exec("select Title, Genre from Books where Title like '%" + srch + "%'"));
+        ui ->tbvwBooks->setModel(display_qrm);
+        db.close();
+
+}
+
+void ViewWindow::on_btnResetTable_clicked()
+{
+    loadCompTable();
+    ui->btnResetTable->setEnabled(false);
+}
+
+void ViewWindow::on_actionSummary_triggered()
+{
+    sd = new SummaryDialog(this);
+    sd->setModal(true);
+    sd->show();
 }

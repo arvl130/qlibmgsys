@@ -21,6 +21,7 @@ public:
 
 private slots:
     void toggleOKBtn();
+
     void on_btnOKCancel_accepted();
 
     void on_btnCoverPhoto_clicked();
