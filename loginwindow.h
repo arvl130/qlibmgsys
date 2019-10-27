@@ -23,27 +23,28 @@ public:
     ~LoginWindow();
 
 private slots:
-    void on_btnAdminLogin_clicked();
+    void checkDB();
 
     void authenticate(QString);
 
     void restoreWindow();
 
-    void on_btnUserLogin_clicked();
-
     void unhideWindow();
+
+    void on_btnAdminLogin_clicked();
+
+    void on_btnUserLogin_clicked();
 
 signals:
     void disableAdminBtns();
 
 private:
     Ui::LoginWindow *ui;
-
     PasswordDialog *pd;
-
     ViewWindow *vw;
 
     QString progName_def = "SQLite Library System";
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "db_conn");
 
     int loginTries_def = 3;
     int loginTries_tmp = loginTries_def;
@@ -55,7 +56,7 @@ private:
             QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
     }
 
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "db_conn");
+
 };
 
 #endif // LOGINWINDOW_H
