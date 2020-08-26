@@ -1,11 +1,11 @@
 # The Qt Library Management System
 
-This program was written back in 2019 for a school project we needed to finish for the semester.
+This program was written back in 2019 for a school project that we needed to finish for the semester.
 
-The code was written in haste, which explains the spaghettified code, and not much has changed after
-the semester finished, and the project was abandoned.
+The code was written in haste, which explains the spaghettified code, and not much has changed since
+the semester has finished, and the project was abandoned.
 
-I am hosting this project here now, so that I can continue on the work that was done previously,
+I am hosting this project here now, so that I can continue on the work that was previously done,
 and perhaps improve the code, such that more people would find it more useful.
 
 I am distributing it free of charge in the hopes that it will be useful, but **_WITHOUT WARRANTY_**.
