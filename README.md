@@ -35,4 +35,4 @@ when you find them.
 * Password recovery options (?)
 * Implement a borrower tracking system
 
-### Copyright (C) 2019-2020 Angelo Geulin, Gabriel Andrei Ecleo
+#### Copyright (C) 2019-2020 Angelo Geulin, Gabriel Andrei Ecleo
