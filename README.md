@@ -1,5 +1,7 @@
 # The Qt Library Management System
 
+![scrot](https://github.com/arvl130/qlibmgsys/blob/dev/scrot.png)
+
 This program was written back in 2019 for a school project that we needed to finish for the semester.
 
 The code was written in haste, which explains the spaghettified code, and not much has changed since
