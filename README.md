@@ -1,4 +1,4 @@
-# The Qt Library Management System
+# 📚 The Qt Library Management System
 
 ![scrot](https://github.com/arvl130/qlibmgsys/blob/dev/scrot.png)
 
