@@ -7,11 +7,22 @@ LoginWindow::LoginWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    // Override project defaults with our fork's new name.
+    setApplicationName();
+
+    // Check the database for anomalies.
+    // TODO: make this function more readable / extensible
     checkDB();
 
-    QPixmap login_ico(":/login.png");
-    ui->pixLogin->setPixmap(login_ico.scaled(ui->pixLogin->width(), ui->pixLogin->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    ui->lblProgramName->setText(progName_def);
+    // Set our bundled login icon.
+    // TODO: make this function more readable
+    QString login_icon_path = ":/login.png";
+    QPixmap login_icon(login_icon_path);
+    setLoginIcon(login_icon);
+
+    // Set our pretty name as the default status text.
+    QString default_status = QCoreApplication::organizationName();
+    setNewStatusText(default_status);
 }
 
 LoginWindow::~LoginWindow()
@@ -54,53 +65,59 @@ void LoginWindow::checkDB() {
 }
 
 void LoginWindow::authenticate(QString password) {
-    QString rawpasswd = "goodpass";
+    // Hardcode the admin password for now (INSECURE!).
+    // TODO: Implement hashed password authentication with salting.
+    QString raw_password = "goodpass";
+    // Use our pretty name as the default status text.
+    QString default_status = QCoreApplication::organizationName();
+    // Declare status text for failed and waiting.
+    QString failed_status = "Login failed";
+    QString waiting_status = "Please wait...";
 
-    if (password == rawpasswd) {
-        restoreWindow();
-        vw = new ViewWindow(this);
-        vw->show();
-        connect(vw, SIGNAL(unhideWindow()), this, SLOT(unhideWindow()));
-        this->hide();
+    // Basic plain-text authentication.
+    if (password == raw_password) {
+        launch_ViewWindow();
     }
     else {
-        ui->centralWidget->setEnabled(false);
-        ui->lblProgramName->setText("Please wait...");
-        delay(2);
-        ui->lblProgramName->setText(progName_def);
+        // Disable window, and update status for incorrect passwords.
+        disableWindow();
+        setNewStatusText(waiting_status);
 
-        loginTries_tmp -= 1;
-        if (loginTries_tmp == 0) {
-            restoreWindow();
-            ui->lblProgramName->setText("Login failed");
-            delay(2);
-            ui->lblProgramName->setText(progName_def);
+        // Try to deter brute-force attacks by delaying execution.
+        delay_secs(2);
+
+        // Retry password authentication if the number of tries
+        // has not exceeded 3.
+        if (login_tries < 3) {
+            launch_PasswordDialog();
         }
         else {
-            pd = new PasswordDialog(this);
-            pd->setModal(true);
-            pd->show();
-            connect(pd, SIGNAL(authenticate(QString)), this, SLOT(authenticate(QString)));
-            connect(pd, SIGNAL(restoreWindow()), this, SLOT(restoreWindow()));
+            // If the number of allowed tries has been exceeded,
+            // re-enable the window, and set a 'failed' status message.
+            enableWindow();
+            setNewStatusText(failed_status);
+
+            // Reset status message after some time.
+            delay_secs(2);
+            setNewStatusText(default_status);
         }
     }
 }
 
 void LoginWindow::restoreWindow() {
-    loginTries_tmp = loginTries_def;
-    ui->centralWidget->setEnabled(true);
+    enableWindow();
 }
 
 void LoginWindow::unhideWindow() {
-    this->show();
+    showWindow();
 }
 
 void LoginWindow::on_btnAdminLogin_clicked()
 {
-     pd = new PasswordDialog(this);
-     pd->setModal(true);
-     pd->show();
-     connect(pd, SIGNAL(authenticate(QString)), this, SLOT(authenticate(QString)));
+    // Always reset the number of login attempts whenever trying
+    // to authenticate.
+    login_tries = 0;
+    launch_PasswordDialog();
 }
 
 void LoginWindow::on_btnUserLogin_clicked()
@@ -110,5 +127,71 @@ void LoginWindow::on_btnUserLogin_clicked()
     connect(this, SIGNAL(disableAdminBtns()), vw, SLOT(disableAdminBtns()));
     emit disableAdminBtns();
     connect(vw, SIGNAL(unhideWindow()), this, SLOT(unhideWindow()));
+    this->hide();
+}
+
+void LoginWindow::setApplicationName() {
+    QCoreApplication::setApplicationName("qlibmgsys");
+    QCoreApplication::setOrganizationName("Qt Library Management System");
+    QCoreApplication::setOrganizationDomain("qlibmgsys.org");
+}
+
+void LoginWindow::setNewStatusText(QString new_status) {
+    ui->lblProgramName->setText(new_status);
+}
+
+void LoginWindow::setLoginIcon(QPixmap login_icon) {
+    ui->pixLogin->
+    setPixmap(login_icon.scaled(ui->pixLogin->width(),      // Make sure to use the image QObject's width.
+                                ui->pixLogin->height(),     // Make sure to use the image QObject's height.
+                                Qt::KeepAspectRatio,        // Do not stretch the image in weird ways.
+                                Qt::SmoothTransformation)); // Anti-alias the image to avoid jarred resizing.
+}
+
+void LoginWindow::launch_ViewWindow() {
+    // Instanstiate our View window and show it.
+    vw = new ViewWindow(this);
+    vw->show();
+
+    // Connect to ViewWindow in case it wants us to appear again later on.
+    connect(vw, SIGNAL(unhideWindow()), this, SLOT(unhideWindow()));
+
+    // Just hide ourselves while we wait for the application to either exit,
+    // or make us re-appear.
+    hideWindow();
+
+    // Make sure to re-enable our window after switching to the new one.
+    enableWindow();
+}
+
+void LoginWindow::launch_PasswordDialog() {
+    // Record our login attempt.
+    login_tries += 1;
+
+    // Instantiate our Password dialog as a modal and show it.
+    pd = new PasswordDialog(this);
+    pd->setModal(true);
+    pd->show();
+
+    // Connect to PasswordDialog for when it:
+    // a) wants us to authenticate the given password; or
+    connect(pd, SIGNAL(authenticate(QString)), this, SLOT(authenticate(QString)));
+    // b) wants us to restore our window immediately (due to auth cancellation).
+    connect(pd, SIGNAL(authInfoCancelled()), this, SLOT(restoreWindow()));
+}
+
+void LoginWindow::enableWindow() {
+    ui->centralWidget->setEnabled(true);
+}
+
+void LoginWindow::disableWindow() {
+    ui->centralWidget->setDisabled(true);
+}
+
+void LoginWindow::showWindow() {
+    this->show();
+}
+
+void LoginWindow::hideWindow() {
     this->hide();
 }

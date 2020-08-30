@@ -17,10 +17,12 @@ void PasswordDialog::on_btxOKCancel_accepted()
 {
     if (!ui->txtPassword->text().isEmpty()) {
         emit authenticate(ui->txtPassword->text());
+        emit authInfoEntered();
     }
+
 }
 
 void PasswordDialog::on_btxOKCancel_rejected()
 {
-    emit restoreWindow();
+    emit authInfoCancelled();
 }

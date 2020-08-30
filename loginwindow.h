@@ -43,20 +43,29 @@ private:
     PasswordDialog *pd;
     ViewWindow *vw;
 
-    QString progName_def = "SQLite Library System";
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "db_conn");
 
-    int loginTries_def = 3;
-    int loginTries_tmp = loginTries_def;
+    int login_tries = 0;
 
-    void delay(int secs)
+    void delay_secs(int seconds)
     {
-        QTime dieTime= QTime::currentTime().addSecs(secs);
+        QTime dieTime= QTime::currentTime().addSecs(seconds);
         while (QTime::currentTime() < dieTime)
             QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
     }
 
+    void setApplicationName();
+    void setNewStatusText(QString new_status);
+    void setLoginIcon(QPixmap login_icon);
 
+    void launch_ViewWindow();
+    void launch_PasswordDialog();
+
+    void enableWindow();
+    void disableWindow();
+
+    void hideWindow();
+    void showWindow();
 };
 
 #endif // LOGINWINDOW_H

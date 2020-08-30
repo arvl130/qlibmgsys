@@ -18,7 +18,9 @@ public:
 signals:
     void authenticate(QString);
 
-    void restoreWindow();
+    void authInfoEntered();
+
+    void authInfoCancelled();
 
 private slots:
     void on_btxOKCancel_accepted();
